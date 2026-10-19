@@ -2,6 +2,8 @@
 
 A StarCraft: Brood War bot written in Python, built on [StardustDevEnvironment](https://github.com/bmnielsen/StardustDevEnvironment).
 
+Die with a Smile - EG
+
 ## Overview
 
 This fork ports the [Stardust](https://github.com/bmnielsen/Stardust) bot to Python (October 2026). A small C++ host embeds CPython in a BWAPI AI module and exposes the complete BWAPI API to it. The bot lives in `python/stardust/`.
