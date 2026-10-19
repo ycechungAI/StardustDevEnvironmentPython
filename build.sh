@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Sets up and builds the project: Python dependencies, the opponent bots that are only recipes, then the test harness.
+# Sets up and builds the project: Python dependencies, the opponent bots that are only recipes, then the test harness,
+# headless in build/ and with game windows in build-ui/.
 #
 # Usage: ./build.sh            (JOBS=8 ./build.sh to build with 8 jobs; BUILD_MEMORY_GB=16 ./build.sh for a 16 GB limit)
 #
@@ -15,6 +16,7 @@ step "Checking tools"
 need git "install git"
 need cmake "install CMake 3.25+ (macOS: brew install cmake; Linux: your package manager)"
 need c++ "install a C++17 compiler (macOS: xcode-select --install; Linux: g++ or clang)"
+need sdl2-config "install SDL2 for the window build (macOS: brew install sdl2; Linux: libsdl2-dev)"
 if ! command -v uv >/dev/null 2>&1; then
     echo "uv not found; installing it from astral.sh"
     curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -44,7 +46,15 @@ JOBS="${JOBS:-$(cat build/build_jobs.txt)}"
 step "Building the tests target with $JOBS jobs (at most ${BUILD_MEMORY_GB:-10} GB)"
 cmake --build build -j "$JOBS" --target tests
 
+step "Configuring the window build (cmake -S . -B build-ui -DCMAKE_BUILD_TYPE=Release -DOPENBW_ENABLE_UI=ON)"
+cmake -S . -B build-ui -DCMAKE_BUILD_TYPE=Release -DOPENBW_ENABLE_UI=ON -DSTARDUST_BUILD_MEMORY_GB="${BUILD_MEMORY_GB:-10}"
+
+step "Building the tests and replay_viewer targets in build-ui with $JOBS jobs"
+cmake --build build-ui -j "$JOBS" --target tests replay_viewer
+
 step "Done"
-for mpq in STARDAT.MPQ BROODAT.MPQ Patch_rt.mpq; do
-    [ -f "build/test/$mpq" ] || echo "Note: copy $mpq from StarCraft 1.16.1 into build/test/ before playing games."
+for dir in build build-ui; do
+    for mpq in STARDAT.MPQ BROODAT.MPQ Patch_rt.mpq; do
+        [ -f "$dir/test/$mpq" ] || echo "Note: copy $mpq from StarCraft 1.16.1 into $dir/test/ before playing games."
+    done
 done

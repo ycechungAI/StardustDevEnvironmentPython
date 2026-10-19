@@ -25,16 +25,7 @@ Also included:
 ./build.sh
 ```
 
-This installs Python dependencies, downloads recipe bots, and builds the test harness. Copy the MPQ files into `build/test/` next to the `tests` binary.
-
-For a UI build (game windows):
-
-```bash
-cmake -S . -B build-ui -DCMAKE_BUILD_TYPE=Release -DOPENBW_ENABLE_UI=ON
-cmake --build build-ui -j 5
-```
-
-Copy the MPQ files into `build-ui/test/` as well.
+This installs Python dependencies, downloads recipe bots, and builds the test harness twice: headless in `build/` and with game windows in `build-ui/` (`-DOPENBW_ENABLE_UI=ON`, needs SDL2). Copy the MPQ files into `build/test/` and `build-ui/test/`, next to the `tests` binaries.
 
 ## Running Games
 
