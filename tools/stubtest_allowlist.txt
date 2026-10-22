@@ -1,5 +1,7 @@
 # Expected differences between python/*.pyi and the pybind11 modules, for:
-#   PYTHONPATH=build/python MYPYPATH=python python -m mypy.stubtest bwapi instrumentation --allowlist tools/stubtest_allowlist.txt
+#   PYTHONPATH=build/python MYPYPATH=python python -m mypy.stubtest bwapi bwem fap instrumentation \
+#     --allowlist tools/stubtest_allowlist.txt
+# All four modules have to be listed: an entry for a module that is not checked counts as an error.
 
 # pybind11 classes use pybind11's own metaclass
 bwapi\.[A-Z]\w*

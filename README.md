@@ -29,6 +29,8 @@ Also included:
 
 This installs Python dependencies, downloads recipe bots, and builds the test harness twice: headless in `build/` and with game windows in `build-ui/` (`-DOPENBW_ENABLE_UI=ON`, needs SDL2). Copy the MPQ files into `build/test/` and `build-ui/test/`, next to the `tests` binaries.
 
+After that, `./start.sh` opens a menu of everything the project can do: play games, watch them, rate the bots, train, build, and test.
+
 ## Running Games
 
 ```bash
