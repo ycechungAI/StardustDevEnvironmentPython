@@ -26,6 +26,16 @@ fi
 step "Installing Python dependencies (uv sync)"
 uv sync
 
+step "Checking the Python interpreter"
+if ! .venv/bin/python -c "from compression import zstd" >/dev/null 2>&1; then
+    {
+        echo "This Python 3.14 build has no zstd support, so the compression.zstd module is missing."
+        echo "The instrumentation code needs it. Use a Python built with zstd, for example:"
+        echo "  uv python install 3.14 && uv venv --managed-python --python 3.14 && uv sync"
+    } >&2
+    exit 1
+fi
+
 step "Downloading opponent bots"
 missing=()
 for recipe in bots/recipes/*/; do

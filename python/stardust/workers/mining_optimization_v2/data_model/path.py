@@ -3,7 +3,7 @@ to a patch or depot, with the observed arrival data at the leaves."""
 
 from __future__ import annotations
 
-from typing import Protocol
+from typing import Protocol, Self
 
 import bwapi
 from stardust.workers.mining_optimization_v2.data_model.cannon_placement import CannonPlacement
@@ -19,7 +19,7 @@ class ArrivalData(Protocol):
     def add_delay_after_action(self, delays_with_probabilities: dict[int, float], order_process_timer_at_arrival: int,
                                action_frame: int, base_probability: float) -> None: ...
 
-    def __lt__(self, other: ArrivalData, /) -> bool: ...
+    def __lt__(self, other: Self, /) -> bool: ...
 
 
 class PathNode[T: ArrivalData]:

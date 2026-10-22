@@ -21,13 +21,19 @@ Also included:
 
 ## Setup
 
-**Requirements:** CMake 3.25+, a C++17 compiler, Python 3.12+, [uv](https://docs.astral.sh/uv/), and the three Brood War data files from StarCraft 1.16.1 (`STARDAT.MPQ`, `BROODAT.MPQ`, `Patch_rt.mpq`).
+**Requirements:** CMake 3.25+, a C++17 compiler, Python 3.14+, [uv](https://docs.astral.sh/uv/), and the three Brood War data files from StarCraft 1.16.1 (`STARDAT.MPQ`, `BROODAT.MPQ`, `Patch_rt.mpq`).
 
 ```bash
 ./build.sh
 ```
 
 This installs Python dependencies, downloads recipe bots, and builds the test harness twice: headless in `build/` and with game windows in `build-ui/` (`-DOPENBW_ENABLE_UI=ON`, needs SDL2). Copy the MPQ files into `build/test/` and `build-ui/test/`, next to the `tests` binaries.
+
+The bot uses the standard library's `compression.zstd`, so the Python 3.14 interpreter needs zstd support. If `build.sh` reports that it is missing, rebuild the environment with a Python that has it:
+
+```bash
+uv python install 3.14 && uv venv --managed-python --python 3.14 && uv sync
+```
 
 After that, `./start.sh` opens a menu of everything the project can do: play games, watch them, rate the bots, train, build, and test.
 
